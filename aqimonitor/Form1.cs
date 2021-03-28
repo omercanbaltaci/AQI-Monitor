@@ -1,19 +1,12 @@
 ﻿using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using System.Globalization;
 using GMap.NET.MapProviders;
 using GMap.NET;
-using System.Diagnostics;
 
 namespace SampleProject
 {
@@ -46,11 +39,14 @@ namespace SampleProject
             label1.Visible = false;
             label2.Visible = false;
             label3.Visible = false;
+            label4.Visible = false;
+            label5.Visible = false;
+            label6.Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string url = "https://api.waqi.info/feed/" + RemoveDiacritics(cityField.Text) + "/?token=e36f4ad8cc0b43ea569f98629f981c92d86ee98a";
+            string url = "https://api.waqi.info/feed/" + RemoveDiacritics(cityField.Text) + APIKeyReference.APIKey;
 
             var client = new RestClient(url);
             client.Timeout = -1;
@@ -84,6 +80,10 @@ namespace SampleProject
                 hkeLabel.ForeColor = Color.Black;
                 hkeLabel.Text = "HKE: " + aqi;
                 hkeLabel.Visible = true;
+
+                label4.Text = "Hassas Gruplar: Solunum yolu hastaları.";
+                label5.Text = "Sağlığa Olan Etki: -";
+                label6.Text = "Alınabilecek Önlemler: -";
             }
             else if (Int32.Parse(aqi) >= 51 & Int32.Parse(aqi) <= 100)
             {
@@ -92,6 +92,10 @@ namespace SampleProject
                 hkeLabel.ForeColor = Color.Black;
                 hkeLabel.Text = "HKE: " + aqi;
                 hkeLabel.Visible = true;
+
+                label4.Text = "Hassas Gruplar: Solunum yolu hastaları.";
+                label5.Text = "Sağlığa Olan Etki: Hassas gruplarda solunum zorluğu,\nkalp ve ciğer hastaları ve yaşlılarda enfeksiyon riski.";
+                label6.Text = "Alınabilecek Önlemler: Hassas gruplar bu havaya\nuzun süre maruz kalmaktan kaçınmalı.";
             }
             else if (Int32.Parse(aqi) >= 101 & Int32.Parse(aqi) <= 150)
             {
@@ -100,6 +104,10 @@ namespace SampleProject
                 hkeLabel.ForeColor = Color.Black;
                 hkeLabel.Text = "HKE: " + aqi;
                 hkeLabel.Visible = true;
+
+                label4.Text = "Hassas Gruplar: Solunum yolu hastaları.";
+                label5.Text = "Sağlığa Olan Etki: Hassas gruplarda solunum zorluğu, kalp ve ciğer hastaları\nve yaşlılarda enfeksiyon riski ve yaşam sürecinin zorlaşması.";
+                label6.Text = "Alınabilecek Önlemler: Hassas gruplar, yaşlılar ve çocuklar bu havaya\nuzun süre maruz kalmaktan kaçınmalı.";
             }
             else if (Int32.Parse(aqi) >= 151 & Int32.Parse(aqi) <= 200)
             {
@@ -108,6 +116,10 @@ namespace SampleProject
                 hkeLabel.ForeColor = Color.White;
                 hkeLabel.Text = "HKE: " + aqi;
                 hkeLabel.Visible = true;
+
+                label4.Text = "Hassas Gruplar: Solunum yolu hastaları.";
+                label5.Text = "Sağlığa Olan Etki: Hassas gruplarda, yaşlılarda ve toplumda solunum zorluğu,\nkalp ve ciğer hastalıklarında artış.";
+                label6.Text = "Alınabilecek Önlemler: Hassas gruplar, yaşlılar ve çocuklar bu havaya\nuzun süre maruz kalmaktan kaçınmalı.";
             }
             else if (Int32.Parse(aqi) >= 201 & Int32.Parse(aqi) <= 300)
             {
@@ -116,6 +128,10 @@ namespace SampleProject
                 hkeLabel.ForeColor = Color.White;
                 hkeLabel.Text = "HKE: " + aqi;
                 hkeLabel.Visible = true;
+
+                label4.Text = "Hassas Gruplar: Solunum yolu hastaları.";
+                label5.Text = "Sağlığa Olan Etki: Hassas gruplarda, yaşlılarda ve toplumda solunum zorluğu,\nkalp ve ciğer hastalıklarında artış.";
+                label6.Text = "Alınabilecek Önlemler: Hassas gruplar, yaşlılar ve çocuklar bu havadan\nkaçınmalı ve diğer kişiler uzun süre solumamalı.";
             }
             else if (Int32.Parse(aqi) >= 301 & Int32.Parse(aqi) <= 500)
             {
@@ -124,6 +140,10 @@ namespace SampleProject
                 hkeLabel.ForeColor = Color.White;
                 hkeLabel.Text = "HKE: " + aqi;
                 hkeLabel.Visible = true;
+
+                label4.Text = "Hassas Gruplar: Solunum yolu hastaları.";
+                label5.Text = "Sağlığa Olan Etki: Hassas gruplarda, yaşlılarda ve toplumda solunum zorluğu,\nkalp ve ciğer hastalıklarında ciddi artış.";
+                label6.Text = "Herkes bu havayı solumaktan kaçınmalı, hassas gruptakiler,\nçocuklar ve yaşlılar fiziksel aktiviteyi düşük tutmalı.";
             }
 
             sourceLabel.ForeColor = hkeLabel.ForeColor;
@@ -213,7 +233,7 @@ namespace SampleProject
             sensitiveLabel.Text = "Kötü\n101-150";
             sensitiveLabel.ForeColor = Color.Black;
 
-            panel6.BackColor = Color.FromArgb(255, 0, 0);
+            panel6.BackColor = Color.FromArgb(126, 0, 35);
             sagliksizLabel.Visible = true;
             sagliksizLabel.Text = "Sağlıksız\n151-200";
             sagliksizLabel.ForeColor = Color.White;
@@ -223,10 +243,17 @@ namespace SampleProject
             coksagliksizLabel.Text = "Çok sağlıksız\n201-300";
             coksagliksizLabel.ForeColor = Color.White;
 
-            panel8.BackColor = Color.FromArgb(126, 0, 35);
+            panel8.BackColor = Color.FromArgb(255, 0, 0);
             zehirliLabel.Visible = true;
             zehirliLabel.Text = "Zehirli\n201-300";
             zehirliLabel.ForeColor = Color.White;
+
+            label1.Visible = true;
+            label2.Visible = true;
+            label3.Visible = true;
+            label4.Visible = true;
+            label5.Visible = true;
+            label6.Visible = true;
         }
 
         static string RemoveDiacritics(string text)
@@ -244,6 +271,11 @@ namespace SampleProject
             }
 
             return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
